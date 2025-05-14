@@ -220,31 +220,6 @@ class BankReviewsExtractor:
             logger.info(f"Saved {len(all_reviews)} combined reviews to {combined_filename}")
         
         return len(all_reviews)
-    
-    def combine_results(self, banks, cities):
-        """Combine all individual CSV files into one master CSV"""
-        all_data = []
-        
-        # Pattern to match bank-city CSV files
-        pattern = f"{self.output_dir}/*.csv"
-        
-        for filename in glob.glob(pattern):
-            try:
-                df = pd.read_csv(filename)
-                all_data.append(df)
-            except Exception as e:
-                logger.error(f"Error reading {filename}: {str(e)}")
-        
-        if all_data:
-            combined_df = pd.concat(all_data, ignore_index=True)
-            
-            # Ensure we only have the requested fields
-            fields = ['bank_name', 'branch_name', 'location', 'review_text', 'rating', 'review_date']
-            combined_df = combined_df[fields]
-            
-            combined_path = f"{self.output_dir}/all_bank_reviews.csv"
-            combined_df.to_csv(combined_path, index=False, encoding='utf-8')
-            logger.info(f"Combined {len(combined_df)} reviews into {combined_path}")
 
 
 def main():
