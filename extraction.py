@@ -212,16 +212,6 @@ class BankReviewsExtractor:
                 except Exception as e:
                     logger.error(f"Error processing {bank} in {city}: {str(e)}")
         
-        # Save individual bank-city results
-        for bank in banks:
-            for city in cities:
-                bank_city_reviews = [r for r in all_reviews if r['bank_name'] == bank and r['location'].find(city) != -1]
-                if bank_city_reviews:
-                    filename = f"{self.output_dir}/{bank.replace(' ', '_')}_{city.replace(' ', '_')}.csv"
-                    df = pd.DataFrame(bank_city_reviews)
-                    df.to_csv(filename, index=False, encoding='utf-8')
-                    logger.info(f"Saved {len(bank_city_reviews)} reviews to {filename}")
-        
         # Save combined results
         combined_filename = f"{self.output_dir}/all_bank_reviews.csv"
         if all_reviews:
