@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import requests
 import json
 import time
@@ -9,6 +10,9 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import glob
 
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Load environment variables from .env file in project root
+load_dotenv(os.path.join(project_root, '.env'))
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
