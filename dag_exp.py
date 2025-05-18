@@ -1,6 +1,7 @@
 from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
 from airflow.utils.dates import days_ago
 from ressources.extraction import main as main_extraction
 from ressources.staging import main as main_staging
@@ -52,4 +53,4 @@ dbt_run = BashOperator(
     append_env=True,
 )
 
-extraction >> staging
+extraction >> staging >> dbt_run
