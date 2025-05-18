@@ -1,6 +1,7 @@
 from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
 from airflow.utils.dates import days_ago
 from ressources.extraction import main as main_extraction
 from ressources.staging import main as main_staging
@@ -42,4 +43,14 @@ staging = PythonOperator(
     dag=dag
 )
 
-extraction >> staging
+dbt_run = BashOperator(
+    task_id='dbt_run',
+    bash_command='cd ~/projets/dw/DBT/etl_dw && dbt run',
+    dag=dag,
+    env={
+        'DBT_PROFILES_DIR': '/home/zakaria/.dbt',
+    },
+    append_env=True,
+)
+
+extraction >> staging >> dbt_run
