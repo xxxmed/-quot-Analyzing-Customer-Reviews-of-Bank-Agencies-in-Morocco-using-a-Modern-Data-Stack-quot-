@@ -42,4 +42,14 @@ staging = PythonOperator(
     dag=dag
 )
 
+dbt_run = BashOperator(
+    task_id='dbt_run',
+    bash_command='cd ~/projets/dw/DBT/etl_dw && dbt run',
+    dag=dag,
+    env={
+        'DBT_PROFILES_DIR': '/home/zakaria/.dbt',
+    },
+    append_env=True,
+)
+
 extraction >> staging

@@ -1,0 +1,11 @@
+version: 2
+models:
+- name: transform_reviews_model
+description: "Transform reviews model"
+columns:
+- name: customer_id
+- name: product_id
+- name: employee_id
+- name: discount
+- name: quantity
+- name: total_amount
