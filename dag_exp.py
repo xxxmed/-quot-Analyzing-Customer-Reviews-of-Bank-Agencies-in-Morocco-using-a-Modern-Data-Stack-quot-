@@ -2,7 +2,8 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from ressources.test1_file import test1
+from ressources.extraction import main as main_extraction
+from ressources.staging import main as main_staging
 
 default_args = {
     'owner': 'ahmed',
@@ -29,16 +30,16 @@ dag = DAG(
     tags=['csv', 'bank_reviews', 'etl', 'no_cleaning']
 )
 
-task1 = PythonOperator(
-    task_id='task1',
-    python_callable=test1,
+extraction = PythonOperator(
+    task_id='extraction',
+    python_callable=main_extraction,
     dag=dag
 )
 
-task2 = PythonOperator(
-    task_id='task2',
-    python_callable=test2,
+staging = PythonOperator(
+    task_id='staging',
+    python_callable=main_staging,
     dag=dag
 )
 
-task1 >> task2
+extraction >> staging
