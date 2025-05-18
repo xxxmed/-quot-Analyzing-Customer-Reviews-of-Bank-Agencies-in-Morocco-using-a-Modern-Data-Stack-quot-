@@ -212,17 +212,7 @@ class BankReviewsExtractor:
                 except Exception as e:
                     logger.error(f"Error processing {bank} in {city}: {str(e)}")
         
-        # Save individual bank-city results
-        for bank in banks:
-            for city in cities:
-                bank_city_reviews = [r for r in all_reviews if r['bank_name'] == bank and r['location'].find(city) != -1]
-                if bank_city_reviews:
-                    filename = f"{self.output_dir}/{bank.replace(' ', '_')}_{city.replace(' ', '_')}.csv"
-                    df = pd.DataFrame(bank_city_reviews)
-                    df.to_csv(filename, index=False, encoding='utf-8')
-                    logger.info(f"Saved {len(bank_city_reviews)} reviews to {filename}")
-        
-        # Save combined results
+
         combined_filename = f"{self.output_dir}/all_bank_reviews.csv"
         if all_reviews:
             df = pd.DataFrame(all_reviews)
@@ -231,30 +221,7 @@ class BankReviewsExtractor:
         
         return len(all_reviews)
     
-    def combine_results(self, banks, cities):
-        """Combine all individual CSV files into one master CSV"""
-        all_data = []
-        
-        # Pattern to match bank-city CSV files
-        pattern = f"{self.output_dir}/*.csv"
-        
-        for filename in glob.glob(pattern):
-            try:
-                df = pd.read_csv(filename)
-                all_data.append(df)
-            except Exception as e:
-                logger.error(f"Error reading {filename}: {str(e)}")
-        
-        if all_data:
-            combined_df = pd.concat(all_data, ignore_index=True)
-            
-            # Ensure we only have the requested fields
-            fields = ['bank_name', 'branch_name', 'location', 'review_text', 'rating', 'review_date']
-            combined_df = combined_df[fields]
-            
-            combined_path = f"{self.output_dir}/all_bank_reviews.csv"
-            combined_df.to_csv(combined_path, index=False, encoding='utf-8')
-            logger.info(f"Combined {len(combined_df)} reviews into {combined_path}")
+    
 
 
 def main():
