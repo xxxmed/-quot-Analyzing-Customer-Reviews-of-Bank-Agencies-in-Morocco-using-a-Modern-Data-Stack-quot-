@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: mart_bank_performance
+    description: "Mart model for bank performance analysis"
+    columns:
+      - name: bank_name
+        description: "Name of the bank"
+        tests:
+          - not_null
+      - name: branch_name
+        description: "Name of the branch"
+        tests:
+          - not_null
+      - name: location
+        description: "Location of the branch"
+        tests:
+          - not_null
+      - name: review_year
+        description: "Year of the reviews"
+        tests:
+          - not_null
+      - name: review_month
+        description: "Month of the reviews"
+        tests:
+          - not_null
+      - name: total_reviews
+        description: "Total number of reviews"
+        tests:
+          - not_null
+      - name: avg_rating
+        description: "Average rating"
+        tests:
+          - not_null
+      - name: positive_reviews
+        description: "Number of positive reviews"
+        tests:
+          - not_null
+      - name: neutral_reviews
+        description: "Number of neutral reviews"
+        tests:
+          - not_null
+      - name: negative_reviews
+        description: "Number of negative reviews"
+        tests:
+          - not_null
+      - name: positive_percentage
+        description: "Percentage of positive reviews"
+        tests:
+          - not_null
+      - name: neutral_percentage
+        description: "Percentage of neutral reviews"
+        tests:
+          - not_null
+      - name: negative_percentage
+        description: "Percentage of negative reviews"
+        tests:
+          - not_null 

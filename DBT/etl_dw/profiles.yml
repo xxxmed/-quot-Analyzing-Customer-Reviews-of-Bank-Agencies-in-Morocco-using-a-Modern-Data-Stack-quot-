@@ -1,0 +1,12 @@
+etl_dw:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: ahmed  # Default PostgreSQL user
+      password: highlevel  # Default PostgreSQL password
+      port: 5432
+      dbname: DataWare
+      schema: public
+      threads: 4 

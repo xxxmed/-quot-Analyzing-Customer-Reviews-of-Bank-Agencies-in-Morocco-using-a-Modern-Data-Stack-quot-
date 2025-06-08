@@ -129,6 +129,118 @@ class BankReviewsExtractor:
             logger.error(f"Error getting reviews for place {place_id}: {e}")
             return {"reviews": [], "status": "ERROR"}
     
+    def _fix_encoding_issues(self, text):
+        """Fix common encoding issues in text"""
+        if not isinstance(text, str):
+            return text
+            
+        # Common encoding issues and their corrections
+        replacements = {
+            # French characters
+            'Ã©': 'é',
+            'Ã¨': 'è',
+            'Ã': 'à',
+            'Ã§': 'ç',
+            'Ã´': 'ô',
+            'Ã¹': 'ù',
+            'Ã»': 'û',
+            'Ã¯': 'ï',
+            'Ã«': 'ë',
+            'Ã¢': 'â',
+            'Ãª': 'ê',
+            'Ã®': 'î',
+            'Ã´': 'ô',
+            'Ã»': 'û',
+            'ÃŸ': 'ß',
+            'Ã±': 'ñ',
+            'Ã¥': 'å',
+            'Ã¦': 'æ',
+            'Ã¸': 'ø',
+            
+            # Additional special characters
+            'Ø': 'é',
+            'Ø©': 'ة',
+            'Ø§': 'ا',
+            'Ø¨': 'ب',
+            'Øª': 'ت',
+            'Ø«': 'ث',
+            'Ø¬': 'ج',
+            'Ø': 'ح',
+            'Ø®': 'خ',
+            'Ø¯': 'د',
+            'Ø°': 'ذ',
+            'Ø±': 'ر',
+            'Ø²': 'ز',
+            'Ø³': 'س',
+            'Ø´': 'ش',
+            'Øµ': 'ص',
+            'Ø¶': 'ض',
+            'Ø·': 'ط',
+            'Ø¸': 'ظ',
+            'Ø¹': 'ع',
+            'Øº': 'غ',
+            'Ù': 'ف',
+            'Ù‚': 'ق',
+            'Ùƒ': 'ك',
+            'Ù„': 'ل',
+            'Ù…': 'م',
+            'Ù†': 'ن',
+            'Ù‡': 'ه',
+            'Ùˆ': 'و',
+            'ÙŠ': 'ي',
+            
+            # Common encoding artifacts
+            'â€"': '—',
+            'â€"': '–',
+            'â€˜': ''',
+            'â€™': ''',
+            'â€œ': '"',
+            'â€': '"',
+            'â€¦': '…',
+            'â€¢': '•',
+            'â€¡': '§',
+            'â€£': '£',
+            'â€¥': '¥',
+            'â€¦': '…',
+            'â€§': '§',
+            'â€¨': '¨',
+            'â€©': '©',
+            'â€ª': 'ª',
+            'â€«': '«',
+            'â€¬': '¬',
+            'â€': '®',
+            'â€¯': '¯',
+            'â€°': '°',
+            'â€±': '±',
+            'â€²': '²',
+            'â€³': '³',
+            'â€´': '´',
+            'â€µ': 'µ',
+            'â€¶': '¶',
+            'â€·': '·',
+            'â€¸': '¸',
+            'â€¹': '¹',
+            'â€º': 'º',
+            'â€»': '»',
+            'â€¼': '¼',
+            'â€½': '½',
+            'â€¾': '¾',
+            'â€¿': '¿'
+        }
+        
+        # First pass: replace known problematic sequences
+        for wrong, correct in replacements.items():
+            text = text.replace(wrong, correct)
+        
+        # Second pass: try to fix any remaining encoding issues
+        try:
+            # Try to encode and decode to catch any remaining issues
+            text = text.encode('utf-8', errors='ignore').decode('utf-8')
+        except Exception as e:
+            logger.warning(f"Error in second pass encoding fix: {e}")
+            
+        return text
+
     def extract_review_data(self, place, bank_name, city):
         """Extract only the essential review data from a place object"""
         reviews_data = []
@@ -159,6 +271,12 @@ class BankReviewsExtractor:
                     review_date = None
             else:
                 review_date = None
+            
+            # Fix encoding issues in all text fields
+            bank_name = self._fix_encoding_issues(bank_name)
+            place_name = self._fix_encoding_issues(place_name)
+            address = self._fix_encoding_issues(address)
+            review_text = self._fix_encoding_issues(review_text)
             
             # Create a simple record with only the requested fields
             reviews_data.append({
@@ -216,12 +334,18 @@ class BankReviewsExtractor:
                 except Exception as e:
                     logger.error(f"Error processing {bank} in {city}: {str(e)}")
         
-
         combined_filename = f"{self.output_dir}/all_bank_reviews.csv"
         if all_reviews:
-            df = pd.DataFrame(all_reviews)
-            df.to_csv(combined_filename, index=False, encoding='utf-8')
-            logger.info(f"Saved {len(all_reviews)} combined reviews to {combined_filename}")
+            try:
+                df = pd.DataFrame(all_reviews)
+                # Ensure all string columns are properly encoded
+                for col in df.select_dtypes(include=['object']).columns:
+                    df[col] = df[col].apply(lambda x: x.encode('utf-8', errors='ignore').decode('utf-8') if isinstance(x, str) else x)
+                # Save with explicit UTF-8 encoding and BOM
+                df.to_csv(combined_filename, index=False, encoding='utf-8-sig')
+                logger.info(f"Saved {len(all_reviews)} combined reviews to {combined_filename}")
+            except Exception as e:
+                logger.error(f"Error saving combined reviews: {str(e)}")
         
         return len(all_reviews)
     

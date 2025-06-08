@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: int_bank_reviews
+    description: "Intermediate model with transformed bank reviews data"
+    columns:
+      - name: id
+        description: "Primary key of the review"
+        tests:
+          - unique
+          - not_null
+      - name: bank_name
+        description: "Name of the bank"
+        tests:
+          - not_null
+      - name: branch_name
+        description: "Name of the branch"
+        tests:
+          - not_null
+      - name: location
+        description: "Location of the branch"
+        tests:
+          - not_null
+      - name: review_text
+        description: "Original text content of the review"
+      - name: normalized_text
+        description: "Review text converted to lowercase"
+      - name: cleaned_text
+        description: "Review text with punctuation and special characters removed"
+      - name: trimmed_text
+        description: "Review text with extra whitespace removed"
+      - name: rating
+        description: "Rating given by the customer (1-5)"
+        tests:
+          - not_null
+      - name: review_date
+        description: "Date when the review was posted"
+        tests:
+          - not_null
+      - name: created_at
+        description: "Timestamp when the record was created"
+        tests:
+          - not_null
+      - name: sentiment
+        description: "Sentiment classification based on rating"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Positive', 'Neutral', 'Negative']
+      - name: review_year
+        description: "Year of the review"
+        tests:
+          - not_null
+      - name: review_month
+        description: "Month of the review"
+        tests:
+          - not_null
+      - name: days_since_review
+        description: "Number of days since the review was posted"
+        tests:
+          - not_null 
