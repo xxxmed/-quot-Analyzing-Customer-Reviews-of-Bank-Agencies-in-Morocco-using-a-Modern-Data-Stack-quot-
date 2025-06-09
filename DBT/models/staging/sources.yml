@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: raw
+    database: DataWare  # Replace with your actual database name
+    schema: public       # Replace with your actual schema name
+    tables:
+      - name: bank_reviews
+        description: "Raw bank reviews data"
+        columns:
+          - name: id
+            description: "Unique identifier for each review"
+          - name: bank_name
+            description: "Name of the bank"
+          - name: branch_name
+            description: "Name of the bank branch"
+          - name: location
+            description: "Location of the bank branch"
+          - name: review_text
+            description: "Text content of the review"
+          - name: rating
+            description: "Rating given in the review"
+          - name: review_date
+            description: "Date when the review was posted"
+          - name: created_at
+            description: "Timestamp when the record was created" 

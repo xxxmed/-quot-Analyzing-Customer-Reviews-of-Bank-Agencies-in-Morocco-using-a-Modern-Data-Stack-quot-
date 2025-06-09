@@ -1,0 +1,14 @@
+bank_reviews:  # This matches the profile name in dbt_project.yml
+  target: dev
+  outputs:
+    dev:
+      type: postgres  # Change this to your database type if different
+      host: localhost
+      port: 5432
+      user: ahmed
+      password: highlevel
+      dbname: DataWare  # Matches your database name from staging.yml
+      schema: public    # Matches your schema name from staging.yml
+      threads: 4
+      keepalives_idle: 0
+      connect_timeout: 10 

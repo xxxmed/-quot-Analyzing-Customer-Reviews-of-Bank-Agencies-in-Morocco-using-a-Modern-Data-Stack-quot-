@@ -13,7 +13,7 @@ def staging_data():
     csv_path = os.path.join(project_root, "bank_reviews_data", "all_bank_reviews.csv")
     
     # Read CSV with explicit encoding and error handling
-    df = pd.read_csv(csv_path, encoding='latin1')
+    df = pd.read_csv(csv_path, encoding='utf-8')
 
     # Database connection parameters
     conn = psycopg2.connect(

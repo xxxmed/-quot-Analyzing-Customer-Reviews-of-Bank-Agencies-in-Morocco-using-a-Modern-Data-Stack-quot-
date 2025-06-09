@@ -1,0 +1,22 @@
+name: 'bank_reviews_analysis'
+version: '1.0.0'
+config-version: 2
+
+profile: 'bank_reviews'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_packages"
+
+models:
+  bank_reviews_analysis:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table 
