@@ -3,10 +3,10 @@ etl_dw:
   outputs:
     dev:
       type: postgres
-      host: localhost
-      user: ahmed  # Default PostgreSQL user
-      password: highlevel  # Default PostgreSQL password
+      host: rvhyajijhxfxhauvrydy.supabase.co
+      user: postgres         # <-- CHANGE THIS
+      password: highlevel@2025     # <-- CHANGE THIS
       port: 5432
-      dbname: DataWare
-      schema: public
-      threads: 4 
+      dbname: bank_reviews_dw                    # <-- CHANGE IF NEEDED
+      schema: public                      # or your schema name
+      sslmode: require

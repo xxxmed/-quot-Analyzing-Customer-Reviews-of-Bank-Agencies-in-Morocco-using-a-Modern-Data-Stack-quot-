@@ -1,12 +1,11 @@
-integration_tests:
-  outputs:
-    postgres:
-      type: "postgres"
-      host: "{{ env_var('POSTGRES_HOST') }}"
-      user: "{{ env_var('POSTGRES_USER') }}"
-      pass: "{{ env_var('DBT_ENV_SECRET_POSTGRES_PASS') }}"
-      port: "{{ env_var('POSTGRES_PORT') | as_number }}"
-      dbname: "{{ env_var('POSTGRES_DATABASE') }}"
-      schema: "{{ env_var('POSTGRES_SCHEMA') }}"
-      threads: 5
+etl_dw:
   target: postgres
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: zakaria
+      password: highlevel
+      port: 5432
+      dbname: bank_reviews_dw
+      schema: public

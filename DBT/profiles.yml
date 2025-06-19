@@ -3,11 +3,11 @@ bank_reviews:  # This matches the profile name in dbt_project.yml
   outputs:
     dev:
       type: postgres  # Change this to your database type if different
-      host: localhost
+      host: rvhyajijhxfxhauvrydy.supabase.co
       port: 5432
-      user: ahmed
-      password: highlevel
-      dbname: DataWare  # Matches your database name from staging.yml
+      user: postgres  # Matches your user from staging.yml
+      password: highlevel@2025
+      dbname: bank_reviews_dw  # Matches your database name from staging.yml
       schema: public    # Matches your schema name from staging.yml
       threads: 4
       keepalives_idle: 0

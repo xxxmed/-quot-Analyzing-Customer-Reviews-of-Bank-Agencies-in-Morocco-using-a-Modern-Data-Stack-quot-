@@ -24,43 +24,34 @@ with stg_reviews as (
 
 text_normalized as (
     select
-        id,
         bank_name,
         branch_name,
         location,
         review_text,
-        {{ normalize_text('review_text') }},
+        lower(trim(review_text)) as normalized_text,
         rating,
-        review_date,
-        created_at
+        review_date
     from stg_reviews
 ),
 
 transformed as (
     select
-        id,
         bank_name,
         branch_name,
         location,
         review_text,
         normalized_text,
-        cleaned_text,
-        trimmed_text,
         rating,
         review_date,
-        created_at,
-        -- Add some useful transformations
         case 
             when rating >= 4 then 'Positive'
             when rating = 3 then 'Neutral'
             else 'Negative'
         end as sentiment,
-        -- Extract year and month for easier analysis
         extract(year from review_date) as review_year,
         extract(month from review_date) as review_month,
-        -- Calculate days since review
         current_date - review_date as days_since_review
     from text_normalized
 )
 
-select * from transformed 
+select * from transformed

@@ -2,13 +2,11 @@ version: 2
 
 sources:
   - name: raw
-    database: DataWare
+    database: bank_reviews_dw
     schema: public
     tables:
       - name: bank_reviews
         columns:
-          - name: id
-            description: Primary key of the review
           - name: bank_name
             description: Name of the bank
           - name: branch_name
@@ -21,18 +19,11 @@ sources:
             description: Rating given by the customer (1-5)
           - name: review_date
             description: Date when the review was posted
-          - name: created_at
-            description: Timestamp when the record was created
 
 models:
   - name: stg_bank_reviews
     description: "Staging model for bank reviews data"
     columns:
-      - name: id
-        description: "Primary key of the review"
-        tests:
-          - unique
-          - not_null
       - name: bank_name
         description: "Name of the bank"
         tests:
@@ -55,7 +46,3 @@ models:
         description: "Date when the review was posted"
         tests:
           - not_null
-      - name: created_at
-        description: "Timestamp when the record was created"
-        tests:
-          - not_null 

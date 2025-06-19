@@ -34,7 +34,11 @@ class MartReviewAnalyzer:
     def connect_to_db(self):
         """Create database connection"""
         try:
-            connection_string = f"postgresql://{self.db_config['username']}:{self.db_config['password']}@{self.db_config['host']}:{self.db_config['port']}/{self.db_config['database']}"
+            # Add sslmode=require for Supabase
+            connection_string = (
+                f"postgresql://{self.db_config['username']}:{self.db_config['password']}@"
+                f"{self.db_config['host']}:{self.db_config['port']}/{self.db_config['database']}?sslmode=require"
+            )
             self.engine = create_engine(connection_string)
             print("Database connection established successfully!")
         except Exception as e:
@@ -233,12 +237,12 @@ class MartReviewAnalyzer:
         }
 
 if __name__ == "__main__":
-    # Database configuration
+    # Database configuration for Supabase
     db_config = {
-        'host': 'localhost',
-        'database': 'DataWare',
-        'username': 'ahmed',
-        'password': os.getenv('DB_PASSWORD'),
+        'host': 'your-supabase-host.supabase.co',  # <-- CHANGE THIS
+        'database': 'postgres',                    # <-- CHANGE IF NEEDED
+        'username': 'your-supabase-username',      # <-- CHANGE THIS
+        'password': os.getenv('SUPABASE_DB_PASSWORD'),  # Set this env variable securely
         'port': 5432
     }
     
@@ -251,4 +255,4 @@ if __name__ == "__main__":
     if results:
         print("\nAnalysis completed successfully!")
         print(f"Results shape: {results['dataframe'].shape}")
-        print(f"Columns: {list(results['dataframe'].columns)}") 
+        print(f"Columns: {list(results['dataframe'].columns)}")

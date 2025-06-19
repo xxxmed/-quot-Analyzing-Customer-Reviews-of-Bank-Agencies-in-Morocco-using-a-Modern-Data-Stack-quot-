@@ -34,10 +34,10 @@ models:
   etl_dw:
     staging:
       +materialized: view
-      +schema: public_staging
+      +schema: public_public_staging
     intermediate:
       +materialized: table
-      +schema: public_intermediate
+      +schema: public_public_intermediate
     marts:
       +materialized: table
-      +schema: public_marts
+      +schema: public_public_marts

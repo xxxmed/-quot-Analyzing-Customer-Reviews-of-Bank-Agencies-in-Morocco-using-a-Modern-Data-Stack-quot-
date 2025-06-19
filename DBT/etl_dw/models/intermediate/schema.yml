@@ -4,11 +4,6 @@ models:
   - name: int_bank_reviews
     description: "Intermediate model with transformed bank reviews data"
     columns:
-      - name: id
-        description: "Primary key of the review"
-        tests:
-          - unique
-          - not_null
       - name: bank_name
         description: "Name of the bank"
         tests:
@@ -25,20 +20,12 @@ models:
         description: "Original text content of the review"
       - name: normalized_text
         description: "Review text converted to lowercase"
-      - name: cleaned_text
-        description: "Review text with punctuation and special characters removed"
-      - name: trimmed_text
-        description: "Review text with extra whitespace removed"
       - name: rating
         description: "Rating given by the customer (1-5)"
         tests:
           - not_null
       - name: review_date
         description: "Date when the review was posted"
-        tests:
-          - not_null
-      - name: created_at
-        description: "Timestamp when the record was created"
         tests:
           - not_null
       - name: sentiment
@@ -58,4 +45,4 @@ models:
       - name: days_since_review
         description: "Number of days since the review was posted"
         tests:
-          - not_null 
+          - not_null

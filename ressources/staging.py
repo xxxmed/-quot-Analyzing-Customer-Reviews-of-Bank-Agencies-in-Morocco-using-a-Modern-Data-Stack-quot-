@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # Get the absolute path to the project root directory
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Load environment variables from .env file in project root
-load_dotenv(os.path.join(project_root, '.env'))
+load_dotenv()
 
 def staging_data():
     # Construct the path to the CSV file
@@ -16,12 +16,17 @@ def staging_data():
     df = pd.read_csv(csv_path, encoding='utf-8')
 
     # Database connection parameters
+    USER = "postgres"  # Supabase default user
+    PASSWORD = "highlevel@2025"
+    HOST = "rvhyajijhxfxhauvrydy.supabase.co"
+    PORT = "5432"
+    DBNAME = "bank_reviews_dw"
     conn = psycopg2.connect(
-        dbname="DataWare",
-        user="ahmed",
-        password=os.getenv('DB_PASSWORD'),
-        host="localhost",
-        port="5432"
+        dbname=DBNAME,
+        user=USER,
+        password=PASSWORD,
+        host=HOST,
+        port=PORT
     )
     cur = conn.cursor()
 
